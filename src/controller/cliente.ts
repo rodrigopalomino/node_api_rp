@@ -18,9 +18,9 @@ export const getClientes = async (req: Request, res: Response) => {
 };
 
 export const getCliente = async (req: Request, res: Response) => {
-  const { codigo } = req.params;
+  const { codigo_cliente } = req.params;
   try {
-    const response = await _getCliente(codigo);
+    const response = await _getCliente(codigo_cliente);
     res.status(response.status).json(response.item);
   } catch (error) {
     res.status(400).json(error);
@@ -32,10 +32,9 @@ export const createCliente = async (req: Request, res: Response) => {
     nombre,
     apellido_paterno,
     apellido_materno,
-    edad,
+    fecha_nacimiento,
     telefono,
     email,
-    estado,
     categoria_id,
   } = req.body;
 
@@ -43,10 +42,9 @@ export const createCliente = async (req: Request, res: Response) => {
     nombre,
     apellido_paterno,
     apellido_materno,
-    edad,
+    fecha_nacimiento,
     telefono,
     email,
-    estado,
     categoria_id,
   };
 
@@ -59,10 +57,10 @@ export const createCliente = async (req: Request, res: Response) => {
 };
 
 export const deleteCliente = async (req: Request, res: Response) => {
-  const { codigo } = req.params;
+  const { codigo_cliente } = req.params;
 
   try {
-    const response = await _deleteCliente(codigo);
+    const response = await _deleteCliente(codigo_cliente);
     res.status(response.status).json(response);
   } catch (error) {
     res.status(400).json(error);
@@ -75,10 +73,9 @@ export const updateCliente = async (req: Request, res: Response) => {
     nombre,
     apellido_paterno,
     apellido_materno,
-    edad,
+    fecha_nacimiento,
     telefono,
     email,
-    estado,
     categoria_id,
   } = req.body;
 
@@ -87,10 +84,9 @@ export const updateCliente = async (req: Request, res: Response) => {
     nombre,
     apellido_paterno,
     apellido_materno,
-    edad,
+    fecha_nacimiento,
     telefono,
     email,
-    estado,
     categoria_id,
   };
 

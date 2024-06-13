@@ -1,10 +1,11 @@
 export interface Producto {
-  producto_id?: number;
-  nombre: string;
-  descripcion: string;
-  stock: number;
-  precio: number;
-  descuento: number;
+  //Primary key
+  codigo_producto?: string;
 
-  categoria_id: number;
+  nombre: string;
+  precio: number;
+  stock: number;
+
+  // createdAt?: Date;
+  // updatedAt?: Date;
 }

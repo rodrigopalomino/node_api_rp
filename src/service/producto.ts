@@ -1,116 +1,85 @@
 import { Producto as ProductoInterface } from "../interface/producto";
+import { Variacion as VariacionInterface } from "../interface/variacion";
 import { Producto } from "../models/producto";
+import { Variacion } from "../models/variacion";
 
-export const _getProductos = async () => {
-  const items = await Producto.findAll();
-
+export const _createProducto = async (
+  producto: ProductoInterface,
+  variaciones?: VariacionInterface[]
+) => {
   try {
-    return {
-      items,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      msg: "error _getProductos",
-      error,
-      status: 400,
-    };
-  }
-};
+    const numero = await Producto.count();
+    const codigo = `p-${numero + 1}`;
 
-export const _getProducto = async (producto_id: string) => {
-  const item = await Producto.findOne({ where: { producto_id: producto_id } });
-
-  try {
-    return {
-      item,
-      status: 200,
-    };
-  } catch (error) {
-    return {
-      msg: "error _getProducto",
-      error,
-      status: 400,
-    };
-  }
-};
-
-export const _createProducto = async (producto: ProductoInterface) => {
-  try {
-    if (
-      await Producto.findOne({ where: { producto_id: producto.producto_id } })
-    ) {
-      return {
-        msg: "Este producto ya existe",
-        status: 400,
-      };
-    }
-
+    producto.codigo_producto = codigo;
     await Producto.create(producto);
 
-    return {
-      msg: `Producto ${producto.nombre} creado`,
-      status: 200,
-    };
+    if (variaciones && variaciones.length > 0) {
+      for (const variacion of variaciones) {
+        variacion.codigo_producto = codigo;
+        await Variacion.create(variacion);
+      }
+      return {
+        msg: "producto con variaciones creado",
+        succes: true,
+        status: 200,
+      };
+    } else {
+      return {
+        msg: "producto creado",
+        succes: true,
+        status: 200,
+      };
+    }
   } catch (error) {
     console.log(error);
 
     return {
       msg: "error _createProducto",
-      error,
+      succes: false,
       status: 400,
     };
   }
 };
 
-export const _deleteProducto = async (producto_id: string) => {
+export const _getProductos = async () => {
   try {
-    if (!(await Producto.findOne({ where: { producto_id: producto_id } }))) {
-      return {
-        msg: `El cliente con id ${producto_id} no existe`,
-        status: 400,
-      };
-    }
-    await Producto.destroy({ where: { producto_id: producto_id } });
+    const items = await Producto.findAll({ order: ["createdAt"] });
 
     return {
-      msg: `El cliente con id ${producto_id} a sido eliminado`,
+      items,
+      succes: true,
       status: 200,
     };
   } catch (error) {
     return {
-      msg: "error _deleteProducto",
-      error,
-      status: 400,
+      msg: "error _getProductos",
+      succes: true,
+      status: 200,
     };
   }
 };
 
-export const _updateProducto = async (producto: ProductoInterface) => {
+export const _getProducto = async (codigo_producto: string) => {
   try {
-    if (
-      !(await Producto.findOne({
-        where: { producto_id: producto.producto_id },
-      }))
-    ) {
-      return {
-        msg: `El producto con id => ${producto.producto_id} no existe`,
-        status: 400,
-      };
-    }
+    const item = await Producto.findOne({
+      where: { codigo_producto: codigo_producto },
+    });
 
-    await Producto.update(producto, {
-      where: { producto_id: producto.producto_id },
+    const variaciones = await Variacion.findAll({
+      where: { codigo_producto: codigo_producto },
     });
 
     return {
-      msg: `El producto ${producto.producto_id} ha sido actualizado con exito`,
+      item:
+        variaciones.length > 0 ? { ...item?.dataValues, variaciones } : item,
+      succes: true,
       status: 200,
     };
   } catch (error) {
     return {
-      msg: "error _updateProducto",
-      error,
+      msg: "error _getProducto",
+      succes: false,
       status: 400,
     };
   }

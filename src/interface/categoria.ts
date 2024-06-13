@@ -1,5 +1,5 @@
 export interface Categoria {
   categoria_id?: number;
-  tipo: string;
+  tipo: string; //Valores => cliente, producto
   categoria: string;
 }

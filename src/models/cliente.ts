@@ -26,7 +26,7 @@ export const Cliente = sequelize.define<ClienteModel>(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    edad: {
+    fecha_nacimiento: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -38,13 +38,10 @@ export const Cliente = sequelize.define<ClienteModel>(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    estado: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+
     categoria_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      // allowNull: false,
     },
   },
   {

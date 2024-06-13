@@ -6,6 +6,8 @@ import { Cliente } from "./cliente";
 import { Producto } from "./producto";
 import { Venta } from "./venta";
 import { DetalleVenta } from "./detalleVenta";
+import { Producto_Categoria } from "./producto_categoria";
+import { Variacion } from "./variacion";
 
 class Serve {
   app: express.Application;
@@ -41,8 +43,10 @@ class Serve {
       await Categoria.sync();
       await Cliente.sync();
       await Producto.sync();
-      await Venta.sync();
-      await DetalleVenta.sync();
+      // await Venta.sync();
+      // await DetalleVenta.sync();
+      await Producto_Categoria.sync();
+      await Variacion.sync();
     } catch (error) {
       console.log(error);
     }
